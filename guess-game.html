@@ -1,0 +1,24 @@
+<head>
+    <title>guess-game</title>
+</head>
+
+<body>
+<h1>Guess the number!</h1>
+{{>renderForm}}
+{{> Response}}
+</body>
+
+<template name="renderForm">
+    <form>
+        <label>What is your guess (Enter 1 to 100)</label>
+        <input type="text" title="guess" id="guess"/>
+        <input type="text" title="dummy" style="display:none;"/>
+        <!-- without second input field, the first input field will submit when hit Enter -->
+    </form>
+    <p>Number of your guess: {{counter}}</p>
+</template>
+<template name="Response">
+    {{#if response }}
+        <p>Your guess is {{response}}</p>
+    {{/if}}
+</template>
