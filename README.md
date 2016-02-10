@@ -5,4 +5,4 @@ meteor create project
 cd project
 delete project.css, project.html, project.js and copy over guess-game.*
 meteor
-browse to localhost:3000/
+browse to localhost:3000/ 
