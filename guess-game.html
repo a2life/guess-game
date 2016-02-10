@@ -4,8 +4,15 @@
 
 <body>
 <h1>Guess the number!</h1>
-{{>renderForm}}
+{{#if answered}}
+{{else}}
+    {{>renderForm}}
+{{/if}}
+
 {{> Response}}
+{{#if answered}}
+    {{>askForNewGame}}
+{{/if}}
 </body>
 
 <template name="renderForm">
@@ -15,10 +22,14 @@
         <input type="text" title="dummy" style="display:none;"/>
         <!-- without second input field, the first input field will submit when hit Enter -->
     </form>
-    <p>Number of your guess: {{counter}}</p>
+
 </template>
 <template name="Response">
     {{#if response }}
         <p>Your guess is {{response}}</p>
     {{/if}}
+    <p>Number of your guess: {{counter}}</p>
+</template>
+<template name="askForNewGame">
+    <input type="button" value="Play Again?" id="playAgain"/>
 </template>

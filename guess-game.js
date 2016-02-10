@@ -7,16 +7,18 @@ if (Meteor.isClient) {
     Session.setDefault('counter', 0);
     Meteor.call('generateNumber');
 
-    Template.renderForm.helpers({
-        counter: function () {
-            return Session.get('counter');
-        }
+    Template.body.helpers({
+       answered: function(){
+           return Session.equals('answered',0);
+       }
     });
-
 
     Template.Response.helpers({
         response: function () {
             return Session.get('response');
+        },
+        counter: function () {
+            return Session.get('counter');
         }
     });
 
@@ -29,33 +31,47 @@ if (Meteor.isClient) {
                 Meteor.call('feedback', guess, function (e, t) {
                     if (e) {
                         console.log(e)
-                    } else Session.set('response', t);
+                    } else
+                    { Session.set('response', t.text);
+                      Session.set('answered', t.answer);
+                    }
                 });
                 e.target.value = "";
             }
+        }
+    });
+
+    Template.askForNewGame.events({
+        'click #playAgain' : function(){
+            window.location.href='.';
         }
     });
 }
 
 if (Meteor.isServer) {
     Meteor.startup(function () {
+
         // code to run on server at startup
     });
-
+ var number;
     Meteor.methods({
         generateNumber: function () {
             number = Math.floor(Math.random() * 100) + 1;
-            console.log(number);
+ //           console.log(number);
         },
         feedback: function (guess) {
-            var response;
+            var response={};
             if (number > guess) {
-                response = 'too low';
+                response.text = 'too low';
+                response.answer = 1;
             } else if (number < guess) {
-                response = 'too high';
+                response.text = 'too high';
+                response.answer = -1;
             } else if (number === guess) {
-                response = "correct!";
+                response.text = "correct!";
+                response.answer = 0;
             }
+
             return response;
         }
     });
